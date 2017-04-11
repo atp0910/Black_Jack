@@ -1,16 +1,10 @@
 package com.example.atp0910.black_jack;
 
 import android.app.Activity;
-import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.app.Activity;
-import android.content.Context;
-import android.widget.ImageView;
-import android.app.Dialog;
 import android.widget.TextView;
 
 public class MainActivity extends Activity
@@ -79,11 +73,6 @@ public class MainActivity extends Activity
                 stay();
             }
         });
-        /*
-        ImageView card1 = (ImageView) findViewById(R.id.playerCard0);
-        Card c = dealer.dealCard();
-        card1.setImageResource( c.getResource());
-        */
     }
     public void initialCards()
     {
@@ -103,6 +92,7 @@ public class MainActivity extends Activity
         hit(player);
         hit(dealer);
         dealerCards[1].setImageResource(R.drawable.back_blue);
+        dealerScore.setText("");
         if(blackJack(dealer))
         {
             dealerCards[1].setImageResource(getResources().getIdentifier(dealer.getHand().getCard(1).toString(),"drawable", getApplicationContext().getPackageName()));
@@ -121,7 +111,6 @@ public class MainActivity extends Activity
             if(p instanceof Player)
             {
                 playerCards[i].setImageResource(getResources().getIdentifier(c.toString(),"drawable", getApplicationContext().getPackageName()));
-                notification.append(p.getHand().getCard(i).toString()+" ");
             }
             else if(p instanceof Dealer)
             {
@@ -138,10 +127,10 @@ public class MainActivity extends Activity
         c = dealer.dealCard();
         p.hit(c);
         setCardImages(p);
-        updateScores();
+        updateScore(p);
         if(bust(p))
         {
-            notification.setText(p.getName()+" busts!");
+            notification.setText(p.getName()+" Busts!");
         }
         else if(charlie(p))
         {
@@ -152,16 +141,28 @@ public class MainActivity extends Activity
     {
         hitButton.setClickable(false);
         stayButton.setClickable(false);
+        setCardImages(dealer);
+        updateScore(dealer);
         while(dealer.getScore() < 17)
         {
             hit(dealer);
         }
         checkWinner();
     }
-    public void updateScores()
+    public void updateScore(Person p)
     {
-        playerScore.setText(Integer.toString(player.getScore()));
-        dealerScore.setText(Integer.toString(dealer.getScore()));
+        if(p instanceof Player)
+        {
+            playerScore.setText(Integer.toString(player.getScore()));
+        }
+        else if(p instanceof Dealer)
+        {
+            dealerScore.setText(Integer.toString(dealer.getScore()));
+        }
+        else
+        {
+            notification.setText("Error updating Score: "+p.toString());
+        }
     }
     public boolean bust(Person p)
     {
@@ -202,14 +203,19 @@ public class MainActivity extends Activity
     }
     public void win()
     {
-
+        notification.append("\n"+player.getName()+" Wins!");
     }
     public void lose()
     {
-
+        notification.append("\n"+player.getName()+" Loses.");
     }
     public void checkWinner()
     {
+        hitButton.setClickable(false);
+        stayButton.setClickable(false);
+        if(player.getScore() > dealer.getScore())
+        {
 
+        }
     }
 }

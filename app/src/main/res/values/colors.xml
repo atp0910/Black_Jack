@@ -8,4 +8,5 @@
     <color name="title_text_color">#d3d3d3</color>
     <color name="player_text_color">#4f4f4f</color>
     <color name="notification_text_color">#7e0000</color>
+    <color name ="unclickable_text_color">#D3D3D3</color>
 </resources>

@@ -7,10 +7,12 @@ public class Person
 {
     private Hand hand;
     private String name;
+    public boolean done;
     public Person(String name)
     {
         hand = new Hand();
         this.name = name;
+        done = false;
     }
     public void hit(Card card)
     {
@@ -31,6 +33,7 @@ public class Person
     public int getScore()
     {
         int score = 0;
+        boolean ace = false;
         Card [] cards = hand.getCards();
         for(int i = 0; i < 5; i++)
         {
@@ -42,10 +45,7 @@ public class Person
             if(faceVal == 14)
             {
                 score += 11;
-                if(score > 21)
-                {
-                    score -= 10;
-                }
+                ace = true;
             }
             else if(faceVal > 10)
             {
@@ -55,6 +55,10 @@ public class Person
             {
                 score += faceVal;
             }
+        }
+        if(score > 21 && ace)
+        {
+            score -= 10;
         }
         return score;
     }

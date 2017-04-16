@@ -25,6 +25,12 @@ public class Hand
             }
         }
     }
+    public void removeCard(int i)
+    {
+        {
+            cards[i] = null;
+        }
+    }
     public int getCount()
     {
         int count = 0;

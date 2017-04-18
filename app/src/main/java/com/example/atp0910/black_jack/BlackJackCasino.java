@@ -7,6 +7,8 @@ import android.widget.Button;
 import android.content.Intent;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.media.MediaPlayer;
+
 public class BlackJackCasino extends Activity
 {
     private Button newGameButton;
@@ -34,6 +36,7 @@ public class BlackJackCasino extends Activity
     private double pot;
     private boolean split;
     private boolean splitScore;
+    private MediaPlayer mp;
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
@@ -88,6 +91,9 @@ public class BlackJackCasino extends Activity
         stayButton.setClickable(false);
         ddButton.setClickable(false);
         colorButtonText();
+        mp = MediaPlayer.create(this, R.raw.play_game);
+        mp.setLooping(true);
+        mp.start();
         newGameButton.setOnClickListener(new View.OnClickListener()
         {
             @Override
@@ -109,6 +115,7 @@ public class BlackJackCasino extends Activity
             public void onClick(View v)
             {
                 Intent intent = new Intent(BlackJackCasino.this, MainActivity.class);
+                mp.stop();
                 startActivity(intent);
                 finish();
             }

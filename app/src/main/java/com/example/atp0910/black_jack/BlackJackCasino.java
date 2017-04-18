@@ -682,12 +682,9 @@ public class BlackJackCasino extends Activity
         } else if (blackJack(dealer)) {
             if(player.insurance && p == player)
             {
-                if(dealer.getHand().getCard(1).getVal() == 10)
-                {
-                    player.winMoney(pot);
-                    playerMoneyAmount.setText(Double.toString(player.getMoneyAmount()));
-                    playerNotification.setText("Insurance payout!");
-                }
+                player.winMoney(pot);
+                playerMoneyAmount.setText(Double.toString(player.getMoneyAmount()));
+                playerNotification.setText("Insurance payout!");
             }
             lose();
         } else if (bust(p)) {

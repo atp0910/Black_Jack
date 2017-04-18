@@ -1,6 +1,5 @@
 package com.example.atp0910.black_jack;
 /**
- *
  * @author atp0910
  */
 public class Card 

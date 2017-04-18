@@ -6,7 +6,6 @@ import android.view.View;
 import android.widget.Button;
 import android.content.Intent;
 import android.widget.ImageView;
-import android.media.MediaPlayer;
 
 public class MainActivity extends Activity
 {
@@ -14,7 +13,6 @@ public class MainActivity extends Activity
     private Button playCasinoButton;
     private Button exitButton;
     private ImageView blackjackImage;
-    private MediaPlayer mp;
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
@@ -25,16 +23,12 @@ public class MainActivity extends Activity
         exitButton = (Button) findViewById(R.id.exitButton);
         blackjackImage = (ImageView) findViewById(R.id.blackjackImage);
         blackjackImage.setImageResource(R.drawable.blackjack);
-        mp = MediaPlayer.create(this,R.raw.game_menu);
-        mp.setLooping(true);
-        mp.start();
         playSimpleButton.setOnClickListener(new View.OnClickListener()
         {
             @Override
             public void onClick(View v)
             {
                 Intent intent = new Intent(MainActivity.this, BlackJackSimple.class);
-                mp.stop();
                 startActivity(intent);
                 finish();
             }
@@ -45,7 +39,6 @@ public class MainActivity extends Activity
             public void onClick(View v)
             {
                 Intent intent = new Intent(MainActivity.this, BlackJackCasino.class);
-                mp.stop();
                 startActivity(intent);
                 finish();
             }
@@ -55,7 +48,6 @@ public class MainActivity extends Activity
             @Override
             public void onClick(View v)
             {
-                mp.stop();
                 finish();
             }
         });

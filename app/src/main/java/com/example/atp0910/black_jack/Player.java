@@ -8,12 +8,14 @@ public class Player extends Person {
     private double money;
     private int wins;
     private int losses;
+    public boolean insurance;
     public Player(String name)
     {
         super(name);
         wins = 0;
         losses = 0;
         money = 100.00;
+        insurance = false;
     }
     public double getMoneyAmount()
     {

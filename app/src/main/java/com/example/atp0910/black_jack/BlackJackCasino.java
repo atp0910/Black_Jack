@@ -139,10 +139,10 @@ public class BlackJackCasino extends Activity
                 @Override
                 public void onClick(View v) {
                     betButton.setClickable(false);
-                    splitButton.setClickable(true);
+                    splitButton.setClickable(false);
                     hitButton.setClickable(true);
                     stayButton.setClickable(true);
-                    ddButton.setClickable(true);
+                    ddButton.setClickable(false);
                     colorButtonText();
                     initialCards();
                 }
@@ -160,7 +160,7 @@ public class BlackJackCasino extends Activity
                     splitButton.setClickable(false);
                     hitButton.setClickable(true);
                     stayButton.setClickable(true);
-                    ddButton.setClickable(true);
+                    ddButton.setClickable(false);
                     colorButtonText();
                     split();
                 }
@@ -190,7 +190,7 @@ public class BlackJackCasino extends Activity
                 splitButton.setClickable(false);
                 hitButton.setClickable(true);
                 stayButton.setClickable(true);
-                ddButton.setClickable(true);
+                ddButton.setClickable(false);
                 colorButtonText();
                 hit(player);
             }
@@ -250,6 +250,33 @@ public class BlackJackCasino extends Activity
         {
             player.done = true;
             endPlayerTurn();
+        }
+        if(player.getHand().getCard(0).getVal() == player.getHand().getCard(1).getVal())
+        {
+            splitButton.setClickable(true);
+            colorButtonText();
+        }
+        if(player.getScore() == 9 || player.getScore() == 10 || player.getScore() == 11)
+        {
+            ddButton.setClickable(true);
+            colorButtonText();
+        }
+        if(dealer.getHand().getCard(0).getVal() == 14)
+        {
+            betButton.setText("Insurance");
+            betButton.setClickable(true);
+            colorButtonText();
+            betButton.setOnClickListener(new View.OnClickListener()
+            {
+                @Override
+                public void onClick(View v)
+                {
+                    player.insurance = true;
+                    betButton.setText("Bet");
+                    betButton.setClickable(false);
+                    colorButtonText();
+                }
+            });
         }
     }
     public void setCardImages(Person p)
@@ -344,10 +371,12 @@ public class BlackJackCasino extends Activity
             public void onClick(View v)
             {
                 betButton.setClickable(false);
-                splitButton.setClickable(true);
-                hitButton.setClickable(true);
-                stayButton.setClickable(true);
-                ddButton.setClickable(true);
+                splitButton.setClickable(false);
+                hitButton.setClickable(false);
+                stayButton.setClickable(false);
+                ddButton.setClickable(false);
+                pot = 0;
+                potAmount.setText(Double.toString(pot));
                 colorButtonText();
                 startGame();
             }
@@ -380,7 +409,7 @@ public class BlackJackCasino extends Activity
         splitButton.setClickable(false);
         hitButton.setClickable(true);
         stayButton.setClickable(true);
-        ddButton.setClickable(true);
+        ddButton.setClickable(false);
         colorButtonText();
         hitButton.setOnClickListener(new View.OnClickListener()
         {
@@ -392,7 +421,7 @@ public class BlackJackCasino extends Activity
                 splitButton.setClickable(false);
                 hitButton.setClickable(true);
                 stayButton.setClickable(true);
-                ddButton.setClickable(true);
+                ddButton.setClickable(false);
                 colorButtonText();
                 hit(player2);
             }
@@ -442,6 +471,11 @@ public class BlackJackCasino extends Activity
                 forfeit();
             }
         });
+        if(player2.getScore() == 9 || player2.getScore() == 10 || player2.getScore() == 11)
+        {
+            ddButton.setClickable(true);
+            colorButtonText();
+        }
     }
     public void updateScore(Person p)
     {
@@ -639,9 +673,22 @@ public class BlackJackCasino extends Activity
     }
     public void checkWinner(Person p)
     {
+        if(p == player)
+        {
+            notification.setText("");
+        }
         if (charlie(dealer)) {
             lose();
         } else if (blackJack(dealer)) {
+            if(player.insurance && p == player)
+            {
+                if(dealer.getHand().getCard(1).getVal() == 10)
+                {
+                    player.winMoney(pot);
+                    playerMoneyAmount.setText(Double.toString(player.getMoneyAmount()));
+                    playerNotification.setText("Insurance payout!");
+                }
+            }
             lose();
         } else if (bust(p)) {
             lose();
@@ -667,6 +714,8 @@ public class BlackJackCasino extends Activity
                 hitButton.setClickable(false);
                 stayButton.setClickable(false);
                 ddButton.setClickable(false);
+                pot = 0;
+                potAmount.setText(Double.toString(pot));
                 colorButtonText();
                 startGame();
             }
